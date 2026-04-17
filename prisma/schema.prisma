@@ -53,8 +53,40 @@ model User {
   sessions      Session[]
 
 
-  invoicePrefix       String        @default("INV")
-  invoiceSequence     Int           @default(0)
-  invoiceSequenceYear Int           @default(0)
-  // invoices            Invoice[]
+  OrderPrefix       String        @default("ODR")
+  OrderSequence     Int           @default(0)
+  OrderSequenceYear Int           @default(0)
+  Order            Order[]
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  userId        String
+  orderNumber   String   @unique
+  customerName  String
+  phone         String
+  status        OrderStatus @default(RECEIVED)
+  totalAmount   Float
+  createdAt     DateTime @default(now())
+
+  items         Item[]
+  user          User @relation(fields: [userId],references: [id])
+}
+
+model Item {
+  id         String  @id @default(cuid())
+  orderId    String
+  garment    String
+  quantity   Int
+  price      Float
+  subtotal   Float
+
+  order      Order @relation(fields: [orderId], references: [id],onDelete: Cascade)
+}
+
+enum OrderStatus {
+  RECEIVED
+  PROCESSING
+  READY
+  DELIVERED
 }

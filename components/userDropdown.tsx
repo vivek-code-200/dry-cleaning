@@ -35,10 +35,6 @@ export default function UserDropdown() {
         return () => window.removeEventListener("keydown", esc);
     }, []);
 
-    const handleLogout = async () => {
-        // TODO: your logout logic
-        await signOut();
-    };
 
     return (
         <div className="relative" ref={ref}>
@@ -46,7 +42,7 @@ export default function UserDropdown() {
             {/* Trigger */}
             <button
                 onClick={() => setOpen(!open)}
-                className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-gray-200 hover:bg-white/5 transition  border-white/10"
+                className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-gray-800 hover:bg-black/10 transition  border-white/10"
             >
                 {/* <div className="w-8 h-8 rounded-full bg-gray-500" /> */}
                 {session?.user?.image ? <img src={session.user.image} className='w-12  rounded-full border border-white/50' alt="User Image" /> : <img src="/avtar.avif" className='w-10 h-10 rounded-full border' alt="User Image" />}
@@ -58,15 +54,15 @@ export default function UserDropdown() {
 
             {/* Dropdown */}
             {open && (
-                <div className="absolute right-0 fadeInFast mt-2 w-64 bg-[#111827] border border-white/10 rounded-xl shadow-lg overflow-hidden z-50">
+                <div className="absolute right-0 fadeInFast mt-2 w-64 bg-white/20 border border-black/20 rounded-xl shadow-lg overflow-hidden z-50 backdrop-blur-2xl">
 
                     {/* User Info */}
-                    <div className="px-4 py-3 border-b border-white/10 flex items-center gap-2">
+                    <div className="px-4 py-3 border-b border-black/10 flex items-center gap-2">
                         {session?.user?.image ? <img src={session.user.image} className='w-12  rounded-full border border-white/50' alt="User Image" /> : <img src="/avtar.avif" className='w-10 h-10 rounded-full border' alt="User Image" />}
                         <div>
 
-                            <p className="text-sm font-medium text-gray-100">{session?.user?.name || "User"}</p>
-                            <p className="text-[11px] text-gray-400">
+                            <p className="text-sm font-medium text-gray-800">{session?.user?.name || "User"}</p>
+                            <p className="text-[11px] text-gray-700">
                                 {session?.user?.email || "user@email.com"}
                             </p>
                         </div>
@@ -77,7 +73,7 @@ export default function UserDropdown() {
 
                         <button
                             onClick={() => router.push("/profile")}
-                            className="w-full text-left px-4 py-2 text-sm hover:bg-white/10 transition"
+                            className="w-full text-left px-4 py-2 text-sm hover:bg-black/10 transition"
                         >
                             <User size={16} className="inline mr-2" />
                             Profile
@@ -85,7 +81,7 @@ export default function UserDropdown() {
 
                         <button
                             onClick={() => router.push("/settings")}
-                            className="w-full text-left px-4 py-2 text-sm hover:bg-white/10 transition"
+                            className="w-full text-left px-4 py-2 text-sm hover:bg-black/10 transition"
                         >
                             <Settings size={16} className="inline mr-2" />
                             Settings
@@ -99,7 +95,7 @@ export default function UserDropdown() {
                     {/* Logout */}
                     <div className="py-1">
                         <button
-                            onClick={()=>signOut()}
+                            onClick={()=>signOut({redirectTo:"/login"})}
                             className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-500/10 transition"
                         >
                             <LogOut size={16} className="inline mr-2" />
