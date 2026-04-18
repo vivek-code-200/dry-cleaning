@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-import { Order } from "@prisma/client";
 
 export default async function ProductPreview() {
 
@@ -25,18 +24,6 @@ export default async function ProductPreview() {
         where: { userId: session?.user.id },
     })
 
-
-
-    // let revenue = 0;
-    // let pending = 0;
-
-    // for (const od of order) {
-    //     if (od.status === "DELIVERED") {
-    //         revenue += od.totalAmount;
-    //     } else if (od.status !== "CANCELLED") {
-    //         pending += od.totalAmount;
-    //     }
-    // }
     const PENDING_STATUSES = ["RECEIVED", "PROCESSING", "READY"] as const;
     let pending = 0;
     let revenue = 0;
@@ -93,7 +80,6 @@ export default async function ProductPreview() {
                             <p className="text-sm text-gray-800">Pending</p>
                             <p className="text-xl font-semibold">₹{pending.toLocaleString("en-IN")}</p>
                         </div>
-
                     </div>
                     <h1 className="font-semibold mx-2">Orders Summary</h1>
                     <div className="grid md:grid-cols-6 grid-cols-2 gap-4">
