@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-// import { OrderStatus } from "@prisma/client";
+import { Prisma,OrderStatus } from "@/generated/prisma/client";
 
 export async function getOrders({
   search,
@@ -10,12 +10,24 @@ export async function getOrders({
   status?: string;
   userId?: string;
 }) {
+  const PENDING_STATUSES: OrderStatus[] = [
+    "RECEIVED",
+    "PROCESSING",
+    "READY",
+  ];
+
+  let statusFilter: Prisma.OrderWhereInput["status"] | undefined;
+
+  if (status === "PENDING") {
+    statusFilter = { in: PENDING_STATUSES };
+  } else if (status && status !== "ALL") {
+    statusFilter = status as OrderStatus;
+  }
+
   return prisma.order.findMany({
     where: {
       userId,
-
-      ...(status && { status: status as any }),
-
+      ...(statusFilter && { status: statusFilter }),
       ...(search && {
         OR: [
           {

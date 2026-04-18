@@ -72,9 +72,17 @@ export default async function OrderDetails(props: any) {
 
                     {/* CUSTOMER */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm">
-                        <h2 className="font-medium mb-3">Customer</h2>
-                        <p>{order.customerName}</p>
-                        <p className="text-gray-500 text-sm">{order.phone}</p>
+                        <div>
+
+                            <h2 className="font-medium mb-3">Customer</h2>
+                            <p>{order.customerName}</p>
+                            <p className="text-gray-500 text-sm">{order.phone}</p>
+                        </div>
+                        <div className="mt-8">
+
+                            <h2 className="font-medium mb-2">Estimated Delivery</h2>
+                            <p>{order.estimatedDelivery ? new Date(order.estimatedDelivery).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : 'Not set'}</p>
+                        </div>
                     </div>
 
                     {/* ITEMS */}
@@ -114,7 +122,7 @@ export default async function OrderDetails(props: any) {
                     {/* STATUS UPDATE */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm">
                         <h2 className="font-medium mb-4">Update Status</h2>
-                        <StatusManager orderId={order.id} currentStatus={order.status}  />
+                        <StatusManager orderId={order.id} currentStatus={order.status} />
                         {/* <select
                             value={order.status}
                             onChange={async (e) => {

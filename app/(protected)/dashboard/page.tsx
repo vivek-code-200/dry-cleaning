@@ -26,16 +26,29 @@ export default async function ProductPreview() {
 
 
 
-    let revenue = 0;
+    // let revenue = 0;
+    // let pending = 0;
+
+    // for (const od of order) {
+    //     if (od.status === "DELIVERED") {
+    //         revenue += od.totalAmount;
+    //     } else if (od.status !== "CANCELLED") {
+    //         pending += od.totalAmount;
+    //     }
+    // }
+    const PENDING_STATUSES = ["RECEIVED", "PROCESSING", "READY"] as const;
     let pending = 0;
+    let revenue = 0;
 
     for (const od of order) {
         if (od.status === "DELIVERED") {
             revenue += od.totalAmount;
-        } else if (od.status !== "CANCELLED") {
+        } else if (PENDING_STATUSES.includes(od.status as any)) {
             pending += od.totalAmount;
         }
     }
+
+    const pendingOrders = order.filter(order =>PENDING_STATUSES.includes(order.status as any)).length;
 
     return (
         <div className="flex-1 bg-gray-100 mt-24 md:mt-0">
@@ -90,8 +103,8 @@ export default async function ProductPreview() {
 
                         <Link href="/orders?status=RECEIVED">
                             <div className="bg-whit bg-gray-200 text-gray-700 p-4 rounded-xl shadow-sm border border-black/10 hover:border-gray-700 transition cursor-pointer">
-                                <p className="text-sm text-gray-500">Remaining Orders</p>
-                                <p className="text-xl font-semibold">{order.filter(o => o.status === "RECEIVED").length}</p>
+                                <p className="text-sm text-gray-500">Pending Orders</p>
+                                <p className="text-xl font-semibold">{pendingOrders}</p>
                             </div>
                         </Link>
                         <Link href="/orders?status=READY">

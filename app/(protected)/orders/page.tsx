@@ -7,7 +7,6 @@ import Link from "next/link";
 import Filter from "./components/filter";
 import { getOrders } from "./actions/filterOrders";
 import { ArrowLeft } from "lucide-react";
-import { CANCELLED } from "dns";
 
 
 type Order = {
@@ -116,7 +115,7 @@ export default async function OrdersPage({ searchParams,
                             <th>Customer</th>
                             <th>Status</th>
                             <th>Total</th>
-                            <th>Date</th>
+                            <th>Estimated Delivery</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -155,7 +154,7 @@ export default async function OrdersPage({ searchParams,
                                 <td>₹{order.totalAmount}</td>
 
                                 <td className="text-gray-500 text-xs">
-                                    {new Date(order.createdAt).toLocaleDateString()}
+                                    {order.estimatedDelivery ? new Date(order.estimatedDelivery).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : 'Not set'}
                                 </td>
                                 <td className="text-gray-500 text-xs">
                                     <Link className="border border-black/20 rounded-lg p-2 hover:bg-black/80 hover:text-white" href={`orders/${order.id}`}>View</Link>
@@ -218,9 +217,10 @@ export default async function OrdersPage({ searchParams,
                                     {order.status}
                                 </span>
 
-                                <p className="text-xs text-gray-400">
-                                    {new Date(order.createdAt).toLocaleDateString()}
-                                </p>
+                                <div className="text-xs text-gray-400 flex flex-col items-end">
+                                    <h2>Estimated Delivery:</h2>
+                                    {order.estimatedDelivery ? new Date(order.estimatedDelivery).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : 'Not set'}
+                                </div>
 
                             </div>
 

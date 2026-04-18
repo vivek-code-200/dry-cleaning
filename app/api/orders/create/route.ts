@@ -103,6 +103,7 @@ type ValidationErrors = Record<string, string>;
 function validateOrderInput(
     customerName: string,
     phone: string,
+    estimatedDelivery: string,
     items: ItemInput[]
 ): ValidationErrors {
     const errors: ValidationErrors = {};
@@ -114,6 +115,12 @@ function validateOrderInput(
 
     if (!phone?.trim()) {
         errors.phone = "Phone number is required";
+    }
+    if (!estimatedDelivery?.trim()) {
+        errors.estimatedDelivery = "Estimated Delivery is required";
+    }
+    if(estimatedDelivery && new Date(estimatedDelivery) < new Date()){
+        errors.estimatedDelivery = "Estimated Delivery cannot be in the past";
     }
 
     // 🔹 Items validation
@@ -154,13 +161,20 @@ export async function POST(req: Request) {
         }
 
         const body = await req.json();
-        const { customerName, phone, items } = body as {
+        const { customerName, phone, estimatedDelivery, items } = body as {
             customerName: string;
             phone: string;
+            estimatedDelivery: string,
             items: ItemInput[];
         };
 
-        const errors = validateOrderInput(customerName, phone, items);
+        const errors = validateOrderInput(customerName, phone, estimatedDelivery, items);
+
+        // const now = new Date();
+        const parsedDate = estimatedDelivery ? new Date(estimatedDelivery + "T00:00:00") : null;
+
+        // const autoestimatedDelivery = new Date(now);
+        // autoestimatedDelivery.setDate(now.getDate() + 2);
 
         if (Object.keys(errors).length > 0) {
             return NextResponse.json(
@@ -168,7 +182,7 @@ export async function POST(req: Request) {
                 { status: 400 }
             );
         }
-        console.log(customerName, phone, items)
+        console.log(customerName, phone, parsedDate, items)
         // 🔴 Validation
         if (!customerName || !phone) {
             return NextResponse.json(
@@ -183,6 +197,12 @@ export async function POST(req: Request) {
                 { status: 400 }
             );
         }
+        // if(!estimatedDelivery){
+        //     return NextResponse.json(
+        //         { error: "Estimated delivery date is required" },
+        //         { status: 400 }
+        //     );
+        // }
 
         // 🔥 Process items safely
         const processedItems = items.map((item) => {
@@ -206,11 +226,9 @@ export async function POST(req: Request) {
             0
         );
 
-        // ⚡ Transaction (important)
+
         const order = await prisma.$transaction(async (tx) => {
-            //   const count = await tx.order.count({
-            //     where: { userId: session.user.id },
-            //   });
+
             const year = new Date().getFullYear();
 
             const user = await prisma.user.findUnique({
@@ -234,12 +252,13 @@ export async function POST(req: Request) {
                     OrderSequence: true,
                 },
             });
-            const prefix = updated.OrderPrefix?.trim().toUpperCase() || "INV";
+            const prefix = updated.OrderPrefix?.trim().toUpperCase() || "ORD";
 
             // const next = isNewYear ? 1 : (user.OrderSequence ?? 0) + 1;
             const padded = String(updated.OrderSequence).padStart(4, "0");
 
             const orderNumber = `${prefix}-${year}-${padded}`;
+            console.log("Generated Order Number:", orderNumber);
 
             //   const orderNumber = `ORD-${String(count + 1).padStart(3, "0")}`;
 
@@ -250,6 +269,7 @@ export async function POST(req: Request) {
                     customerName,
                     phone,
                     totalAmount,
+                    estimatedDelivery: parsedDate,
                     items: {
                         create: processedItems,
                     },

@@ -12,12 +12,14 @@ type Item = {
 type FormState = {
     customerName: string;
     phone: string;
+    estimatedDelivery?: string;
 };
 
 export default function CreateOrderPage() {
     const [form, setForm] = useState<FormState>({
         customerName: "",
         phone: "",
+        estimatedDelivery: "",
     });
 
     const [items, setItems] = useState<Item[]>([
@@ -97,6 +99,7 @@ export default function CreateOrderPage() {
         const payload = {
             customerName: form.customerName,
             phone: form.phone,
+            estimatedDelivery: form.estimatedDelivery,
             items: items.map((item) => ({
                 garment: item.garment,
                 quantity: item.quantity,
@@ -125,7 +128,7 @@ export default function CreateOrderPage() {
             console.log("Order Created:", data);
 
             // reset
-            setForm({ customerName: "", phone: "" });
+            setForm({ customerName: "", phone: "", estimatedDelivery: "" });
             setItems([{ garment: "", quantity: 1, price: 0 }]);
             alert(`${data.orderNumber} is Created.`)
 
@@ -141,7 +144,7 @@ export default function CreateOrderPage() {
             <header className="bg-black/10 border-b border-black/20 px-6 py-4 flex justify-between">
                 <div>
                     <p className=" text-gray-800 ">
-                        Order 
+                        Order
                     </p>
 
                     <p className=" text-gray-500 text-xs">Create your order here</p>
@@ -166,7 +169,8 @@ export default function CreateOrderPage() {
 
                     {/* CUSTOMER INFO */}
                     <div className="grid md:grid-cols-2 gap-4">
-                        <div >
+                        <div className="flex flex-col gap-1">
+                            <label className="text-sm">Customer Name</label>
                             <input
                                 name="customerName"
                                 value={form.customerName}
@@ -181,7 +185,8 @@ export default function CreateOrderPage() {
                                 </p>
                             )}
                         </div>
-                        <div>
+                        <div className="flex flex-col gap-1">
+                            <label className="text-sm">Contact Number</label>
                             <input
                                 name="phone"
                                 value={form.phone}
@@ -196,20 +201,38 @@ export default function CreateOrderPage() {
                                 </p>
                             )}
                         </div>
+                        <div className="flex flex-col gap-1">
+                            <label className="text-sm">Estimated Delivery</label>
+
+                            <input
+                                name="estimatedDelivery"
+                                type="date"
+                                value={form.estimatedDelivery}
+                                onChange={(e) =>
+                                    setForm({ ...form, estimatedDelivery: e.target.value })
+                                }
+                                className="border p-2 rounded-lg"
+                            />
+                            {errors.estimatedDelivery && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.estimatedDelivery}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
                     {/* ITEMS */}
                     <div className="flex items-center flex-col">
                         <h3 className="font-medium my-3 mt-5 self-start">Garments</h3>
 
-                        <div className=" md:grid hidden  grid-cols-4  gap-2  mb-2 px-1 w-full">
-                            {["Description", "Qty", "Unit Price", "Amount", ""].map((h, i) => (
+                        <div className=" md:grid hidden  grid-cols-3  gap-2  mb-2 px-1 w-full">
+                            {["Description", "Qty", "Unit Price", ""].map((h, i) => (
                                 <span key={i} className="text-[9px] font-bold uppercase tracking-widest text-stone-400 text-center">{h}</span>
                             ))}
                         </div>
                         <div className="space-y-3 mt-5 md:mt-0">
                             {items.map((item, i) => (
-                                <div key={i} className="grid md:grid-cols-4 items-center md:gap-10 gap-2">
+                                <div key={i} className="grid md:grid-cols-3 items-center md:gap-5 gap-2">
                                     <div className="-ml-10 md:hidden">{i + 1}.</div>
                                     <div>
                                         <h2 className="text-gray-500 mb-1 md:hidden">Description :</h2>
@@ -223,7 +246,7 @@ export default function CreateOrderPage() {
                                                 placeholder="Garment"
                                                 className={`border p-2 rounded-lg ${errors[`items[${i}].garment`] ? "border-red-500" : ""
                                                     }`}
-                                                required
+
                                             />
 
                                             {errors[`items[${i}].garment`] && (
@@ -278,7 +301,7 @@ export default function CreateOrderPage() {
                                         </div>
                                     </div>
                                     <div className="w-full flex items-center gap-10 ml-10">
-
+                                        <span key={i} className="text-[9px] font-bold uppercase tracking-widest text-stone-400 text-center">Amount :</span>
                                         <div className="flex items-center text-sm text-gray-500">
                                             ₹{item.quantity * item.price}
                                         </div>

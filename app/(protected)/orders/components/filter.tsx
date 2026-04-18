@@ -57,6 +57,7 @@ export default function Filter() {
         className="border p-2 rounded-lg"
       >
         <option value="">All Status</option>
+        <option value="PENDING">PENDING</option>
         <option value="RECEIVED">RECEIVED</option>
         <option value="PROCESSING">PROCESSING</option>
         <option value="READY">READY</option>

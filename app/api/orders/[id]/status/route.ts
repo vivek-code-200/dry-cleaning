@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 const validTransitions: Record<string, string[]> = {
-    RECEIVED: ["PROCESSING","CANCELLED"],
-    PROCESSING: ["READY","CANCELLED"],
+    RECEIVED: ["PROCESSING", "CANCELLED"],
+    PROCESSING: ["READY", "CANCELLED"],
     READY: ["DELIVERED"],
     DELIVERED: [],
     CANCELLED: [],
@@ -23,15 +23,21 @@ export async function PATCH(
                 { status: 400 }
             );
         }
-        console.log("Got params :", params.id)
 
         const order = await prisma.order.findUnique({
             where: { id: params.id },
         });
 
-        
+        let estimatedDelivery = order?.estimatedDelivery;
 
-        
+        if (status === "PROCESSING") {
+            estimatedDelivery = new Date();
+            estimatedDelivery.setDate(estimatedDelivery.getDate() + 1);
+        }
+
+        if (status === "READY") {
+            estimatedDelivery = new Date(); // today
+        }
 
         if (!order) {
             return NextResponse.json(
@@ -52,9 +58,9 @@ export async function PATCH(
 
         const updated = await prisma.order.update({
             where: { id: params.id },
-            data: { status },
+            data: { status ,estimatedDelivery},
         });
-// console.log("Updated order status to", updated.status);
+        // console.log("Updated order status to", updated.status);
         return NextResponse.json(updated);
 
     } catch (error) {

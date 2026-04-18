@@ -68,6 +68,7 @@ model Order {
   status        OrderStatus @default(RECEIVED)
   totalAmount   Float
   createdAt     DateTime @default(now())
+  estimatedDelivery DateTime?
 
   items         Item[]
   user          User @relation(fields: [userId],references: [id])
