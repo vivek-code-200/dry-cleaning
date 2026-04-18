@@ -1,4 +1,5 @@
 "use client"
+import Link from "next/link";
 import { useState } from "react";
 
 // 🔹 Types
@@ -136,18 +137,35 @@ export default function CreateOrderPage() {
     };
 
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex-1  bg-gray-100 mt-24 md:mt-0">
+            <header className="bg-black/10 border-b border-black/20 px-6 py-4 flex justify-between">
+                <div>
+                    <p className=" text-gray-800 ">
+                        Order 
+                    </p>
+
+                    <p className=" text-gray-500 text-xs">Create your order here</p>
+                </div>
+                <Link href="/orders"><button className=" bg-blue-500 hover:bg-blue-700 text-white py-2 rounded-lg px-3 ">
+                    View Orders
+                </button></Link>
+            </header>
 
             {/* MAIN CONTENT */}
-            <div className="flex-1 p-6 grid grid-cols-3 gap-6">
+            <div className="flex-1 p-6 grid md:grid-cols-3 gap-6">
 
                 {/* LEFT: FORM */}
-                <div className="col-span-2 bg-white p-6 rounded-2xl shadow-sm space-y-6">
+                <div className="md:col-span-2 bg-white p-6 rounded-2xl shadow-sm space-y-6">
+                    <div className="flex justify-between items-center">
 
-                    <h2 className="text-lg font-semibold">Create Order</h2>
+                        <h2 className="text-lg font-semibold">Create Order</h2>
+                        <Link href="/orders">
+                            <h2 className="text-blue-500 hover:underline text-sm ">View all Orders</h2>
+                        </Link>
+                    </div>
 
                     {/* CUSTOMER INFO */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid md:grid-cols-2 gap-4">
                         <div >
                             <input
                                 name="customerName"
@@ -181,67 +199,83 @@ export default function CreateOrderPage() {
                     </div>
 
                     {/* ITEMS */}
-                    <div>
-                        <h3 className="font-medium my-3 mt-5">Garments</h3>
+                    <div className="flex items-center flex-col">
+                        <h3 className="font-medium my-3 mt-5 self-start">Garments</h3>
 
-                        <div className=" grid grid-cols-4  gap-2  mb-2 px-1">
+                        <div className=" md:grid hidden  grid-cols-4  gap-2  mb-2 px-1 w-full">
                             {["Description", "Qty", "Unit Price", "Amount", ""].map((h, i) => (
                                 <span key={i} className="text-[9px] font-bold uppercase tracking-widest text-stone-400 text-center">{h}</span>
                             ))}
                         </div>
-                        <div className="space-y-3  grid-cols-4 w-full">
+                        <div className="space-y-3 mt-5 md:mt-0">
                             {items.map((item, i) => (
-                                <div key={i} className="grid grid-cols-4 gap-10">
+                                <div key={i} className="grid md:grid-cols-4 items-center md:gap-10 gap-2">
+                                    <div className="-ml-10 md:hidden">{i + 1}.</div>
                                     <div>
-                                        <input
-                                            value={item.garment}
-                                            onChange={(e) =>
-                                                handleItemChange(i, "garment", e.target.value)
-                                            }
-                                            placeholder="Garment"
-                                            className={`border p-2 rounded-lg mr-5 ${errors[`items[${i}].garment`] ? "border-red-500" : ""
-                                                }`}
-                                            required
-                                        />
+                                        <h2 className="text-gray-500 mb-1 md:hidden">Description :</h2>
 
-                                        {errors[`items[${i}].garment`] && (
-                                            <p className="text-red-500 text-xs">
-                                                {errors[`items[${i}].garment`]}
-                                            </p>
-                                        )}
+                                        <div className="">
+                                            <input
+                                                value={item.garment}
+                                                onChange={(e) =>
+                                                    handleItemChange(i, "garment", e.target.value)
+                                                }
+                                                placeholder="Garment"
+                                                className={`border p-2 rounded-lg ${errors[`items[${i}].garment`] ? "border-red-500" : ""
+                                                    }`}
+                                                required
+                                            />
+
+                                            {errors[`items[${i}].garment`] && (
+                                                <p className="text-red-500 text-xs">
+                                                    {errors[`items[${i}].garment`]}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
+
                                     <div>
-                                        <input
-                                            type="number"
-                                            value={item.quantity}
-                                            onChange={(e) =>
-                                                handleItemChange(i, "quantity", Number(e.target.value))
-                                            }
-                                            className={`border p-2 rounded-lg ${errors[`items[${i}].quantity`] ? "border-red-500" : ""
-                                                }`}
-                                        />
-                                        {errors[`items[${i}].quantity`] && (
-                                            <p className="text-red-500 text-xs">
-                                                {errors[`items[${i}].quantity`]}
-                                            </p>
-                                        )}
+                                        <h2 className="text-gray-500 mb-1 md:hidden">Quantity :</h2>
+
+
+                                        <div>
+                                            <input
+                                                type="number"
+                                                value={item.quantity}
+                                                onChange={(e) =>
+                                                    handleItemChange(i, "quantity", Number(e.target.value))
+                                                }
+                                                className={`border p-2 rounded-lg ${errors[`items[${i}].quantity`] ? "border-red-500" : ""
+                                                    }`}
+                                            />
+                                            {errors[`items[${i}].quantity`] && (
+                                                <p className="text-red-500 text-xs">
+                                                    {errors[`items[${i}].quantity`]}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
+
+
                                     <div>
-                                        <input
-                                            type="number"
-                                            value={item.price}
-                                            onChange={(e) =>
-                                                handleItemChange(i, "price", Number(e.target.value))
-                                            }
-                                            className={`border p-2 rounded-lg ${errors[`items[${i}].price`] ? "border-red-500" : ""
-                                                }`}
-                                            required
-                                        />
-                                        {errors[`items[${i}].price`] && (
-                                            <p className="text-red-500 text-xs">
-                                                {errors[`items[${i}].price`]}
-                                            </p>
-                                        )}
+                                        <h2 className="text-gray-500 mb-1 md:hidden">Unit Price :</h2>
+                                        <div>
+                                            <input
+                                                type="number"
+                                                value={item.price}
+                                                onChange={(e) =>
+                                                    handleItemChange(i, "price", Number(e.target.value))
+                                                }
+                                                className={`border p-2 rounded-lg ${errors[`items[${i}].price`] ? "border-red-500" : ""
+                                                    }`}
+                                                required
+                                            />
+                                            {errors[`items[${i}].price`] && (
+                                                <p className="text-red-500 text-xs">
+                                                    {errors[`items[${i}].price`]}
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="w-full flex items-center gap-10 ml-10">
 
@@ -265,14 +299,14 @@ export default function CreateOrderPage() {
 
                         <button
                             onClick={() => addItem()}
-                            className="py-4 text-sm text-blue-600"
+                            className="py-2 px-4 mt-5 text-sm text-blue-600 border border-blue-600/50 rounded-lg hover:bg-blue-50 transition"
                         >
                             + Add Item
                         </button>
                     </div>
 
                     {/* SUBMIT */}
-                    <button onClick={() => { handleSubmit() }} disabled={saving} className="bg-black text-white mt-5 px-6 py-3 rounded-xl">
+                    <button onClick={() => { handleSubmit() }} disabled={saving} className="bg-black  text-white mt-5 px-6 py-3 rounded-xl">
                         {saving ? <span>Creating Order ...</span> : <span>Create Order</span>}
                     </button>
 

@@ -1,0 +1,67 @@
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+
+const validTransitions: Record<string, string[]> = {
+    RECEIVED: ["PROCESSING","CANCELLED"],
+    PROCESSING: ["READY","CANCELLED"],
+    READY: ["DELIVERED"],
+    DELIVERED: [],
+    CANCELLED: [],
+};
+
+export async function PATCH(
+    req: Request,
+    props: any
+) {
+    try {
+        const { status } = await req.json();
+        const params = await props.params;
+
+        if (!status) {
+            return NextResponse.json(
+                { error: "Status is required" },
+                { status: 400 }
+            );
+        }
+        console.log("Got params :", params.id)
+
+        const order = await prisma.order.findUnique({
+            where: { id: params.id },
+        });
+
+        
+
+        
+
+        if (!order) {
+            return NextResponse.json(
+                { error: "Order not found" },
+                { status: 404 }
+            );
+        }
+
+        const allowed = validTransitions[order.status] || [];
+        // console.log("Allowed transitions from", order.status, "are", allowed);
+
+        if (!allowed.includes(status)) {
+            return NextResponse.json(
+                { error: "Invalid status transition" },
+                { status: 400 }
+            );
+        }
+
+        const updated = await prisma.order.update({
+            where: { id: params.id },
+            data: { status },
+        });
+// console.log("Updated order status to", updated.status);
+        return NextResponse.json(updated);
+
+    } catch (error) {
+        console.error("Error updating order status:", error);
+        return NextResponse.json(
+            { error: "Internal Server Error" },
+            { status: 500 }
+        );
+    }
+}

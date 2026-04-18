@@ -69,7 +69,7 @@ export default function UserDropdown() {
                     </div>
 
                     {/* Menu */}
-                    <div className="py-1 text-gray-400">
+                    {/* <div className="py-1 text-gray-400">
 
                         <button
                             onClick={() => router.push("/profile")}
@@ -87,7 +87,7 @@ export default function UserDropdown() {
                             Settings
                         </button>
 
-                    </div>
+                    </div> */}
 
                     {/* Divider */}
                     <div className="border-t border-white/10" />

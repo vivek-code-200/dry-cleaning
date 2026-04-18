@@ -2,8 +2,6 @@ import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import Sidebar from "@/components/Sidebar"
 import Topbar from "@/components/Topbar"
-import prisma from "@/lib/prisma"
-
 
 export default async function ProtectedLayout({
   children,
@@ -14,26 +12,17 @@ export default async function ProtectedLayout({
   const session = await auth()
 
   if (!session) {
-    redirect("/auth/signin")
+    redirect("/login")
   }
-
-  // FORCE PASSWORD SET
-
-
-
-  
 
   return (
     <div className="flex bg-slate-950">
-      {/* <Navbar2 /> */}
-      {session && <Sidebar />}
-
+      <div className="hidden md:block">
+        <Sidebar />
+      </div>
       <div className="w-full relative h-screen flex flex-col  overflow-y-auto">
-        <Topbar />
-        {/* <div className=" overflow-y-auto"> */}
-
+        <Topbar name={session.user.name || "user"} />
         {children}
-        {/* </div> */}
       </div>
     </div>
   )

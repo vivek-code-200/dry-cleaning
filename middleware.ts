@@ -10,7 +10,7 @@ export async function middleware(req: NextRequest) {
 
   // Not logged in → redirect
   if (!token) {
-    return NextResponse.redirect(new URL("/auth/signin", req.url))
+    return NextResponse.redirect(new URL("/login", req.url))
   }
   // if (req.nextUrl.pathname.startsWith("/set-password")) {
   //   return NextResponse.next()
@@ -27,5 +27,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/protected/:path*"],
+  matcher: ["/dashboard/:path*", "/protected/:path*","/orders/:path*"],
 }
