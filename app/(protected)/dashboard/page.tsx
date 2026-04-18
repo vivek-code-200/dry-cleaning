@@ -49,7 +49,9 @@ export default async function ProductPreview() {
         }
     }
 
-    const pendingOrders = order.filter((od: Order) => PENDING_STATUSES.includes(od.status as any)).length;
+    const pendingOrders = order.filter(od =>
+        PENDING_STATUSES.includes(od.status as any)
+    );
 
     return (
         <div className="flex-1 bg-gray-100 mt-24 md:mt-0">
@@ -105,7 +107,7 @@ export default async function ProductPreview() {
                         <Link href="/orders?status=RECEIVED">
                             <div className="bg-whit bg-gray-200 text-gray-700 p-4 rounded-xl shadow-sm border border-black/10 hover:border-gray-700 transition cursor-pointer">
                                 <p className="text-sm text-gray-500">Pending Orders</p>
-                                <p className="text-xl font-semibold">{pendingOrders}</p>
+                                <p className="text-xl font-semibold">{pendingOrders.length}</p>
                             </div>
                         </Link>
                         <Link href="/orders?status=READY">
