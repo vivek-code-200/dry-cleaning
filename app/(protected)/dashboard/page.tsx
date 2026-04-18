@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
+import { Order } from "@prisma/client";
 
 export default async function ProductPreview() {
 
@@ -48,7 +49,7 @@ export default async function ProductPreview() {
         }
     }
 
-    const pendingOrders = order.filter(order =>PENDING_STATUSES.includes(order.status as any)).length;
+    const pendingOrders = order.filter((od: Order) => PENDING_STATUSES.includes(od.status as any)).length;
 
     return (
         <div className="flex-1 bg-gray-100 mt-24 md:mt-0">
