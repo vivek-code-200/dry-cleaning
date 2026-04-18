@@ -20,7 +20,7 @@ export default async function ProductPreview() {
         take: 2,
     })
 
-    const order = await prisma.order.findMany({
+    const orders = await prisma.order.findMany({
         where: { userId: session?.user.id },
     })
 
@@ -28,16 +28,16 @@ export default async function ProductPreview() {
     let pending = 0;
     let revenue = 0;
 
-    for (const od of order) {
-        if (od.status === "DELIVERED") {
-            revenue += od.totalAmount;
-        } else if (PENDING_STATUSES.includes(od.status as any)) {
-            pending += od.totalAmount;
+    for (const order of orders) {
+        if (order.status === "DELIVERED") {
+            revenue += order.totalAmount;
+        } else if (PENDING_STATUSES.includes(order.status as typeof PENDING_STATUSES[number])) {
+            pending += order.totalAmount;
         }
     }
 
-    const pendingOrders = order.filter(od =>
-        PENDING_STATUSES.includes(od.status as any)
+    const pendingOrders = orders.filter(order =>
+        PENDING_STATUSES.includes(order.status as typeof PENDING_STATUSES[number])
     );
 
     return (
@@ -86,7 +86,7 @@ export default async function ProductPreview() {
                         <Link href="/orders">
                             <div className="bg-white p-4 rounded-xl shadow-sm border border-black/10 hover:border-gray-500 transition cursor-pointer">
                                 <p className="text-sm text-gray-500">Total Orders</p>
-                                <p className="text-xl font-semibold">{order.length}</p>
+                                <p className="text-xl font-semibold">{orders.length}</p>
                             </div>
                         </Link>
 
@@ -99,27 +99,27 @@ export default async function ProductPreview() {
                         <Link href="/orders?status=READY">
                             <div className="bg-whit bg-green-100 text-green-700 p-4 rounded-xl shadow-sm border border-black/10 hover:border-green-500 transition cursor-pointer">
                                 <p className="text-sm text-gray-500">Ready</p>
-                                <p className="text-xl font-semibold">{order.filter(o => o.status === "READY").length}</p>
+                                <p className="text-xl font-semibold">{orders.filter(o => o.status === "READY").length}</p>
                             </div>
                         </Link>
 
                         <Link href="/orders?status=PROCESSING">
                             <div className="bg-whit bg-blue-100 text-blue-700 p-4 rounded-xl shadow-sm border border-black/10 hover:border-indigo-500 transition cursor-pointer">
                                 <p className="text-sm text-gray-500">Processing</p>
-                                <p className="text-xl font-semibold">{order.filter(o => o.status === "PROCESSING").length}</p>
+                                <p className="text-xl font-semibold">{orders.filter(o => o.status === "PROCESSING").length}</p>
                             </div>
                         </Link>
 
                         <Link href="/orders?status=DELIVERED">
                             <div className="bg-whit bg-black text-white p-4 rounded-xl shadow-sm border border-black/10 hover:border-white transition cursor-pointer">
                                 <p className="text-sm text-gray-500">Delivered</p>
-                                <p className="text-xl font-semibold">{order.filter(o => o.status === "DELIVERED").length}</p>
+                                <p className="text-xl font-semibold">{orders.filter(o => o.status === "DELIVERED").length}</p>
                             </div>
                         </Link>
                         <Link href="/orders?status=DELIVERED">
                             <div className="bg-whit bg-red-100 text-red-700  p-4 rounded-xl shadow-sm border border-black/10 hover:border-red-500 transition cursor-pointer">
                                 <p className="text-sm text-gray-500">Cancelled</p>
-                                <p className="text-xl font-semibold">{order.filter(o => o.status === "CANCELLED").length}</p>
+                                <p className="text-xl font-semibold">{orders.filter(o => o.status === "CANCELLED").length}</p>
                             </div>
                         </Link>
                     </div>
@@ -144,7 +144,7 @@ export default async function ProductPreview() {
                             </thead>
 
                             <tbody>
-                                {order.length === 0 && (
+                                {orders.length === 0 && (
                                     <tr>
                                         <td colSpan={4} className="text-center py-6 text-gray-500">
                                             No orders yet.
