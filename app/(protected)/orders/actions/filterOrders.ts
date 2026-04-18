@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Prisma,OrderStatus } from "@/generated/prisma/client";
+import { Prisma,OrderStatus } from "@prisma/client";
 
 export async function getOrders({
   search,
