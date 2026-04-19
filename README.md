@@ -51,7 +51,7 @@ RECEIVED → PROCESSING → READY → DELIVERED
 
 ---
 
-## Order Delivery Estimation Logic
+### Order Delivery Estimation Logic
 
 - Orders follow a defined lifecycle: RECEIVED → PROCESSING → READY → DELIVERED / CANCELLED
 - Estimated delivery date is not static; it is recalculated whenever the order status changes
