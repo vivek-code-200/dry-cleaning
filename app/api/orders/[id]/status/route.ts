@@ -47,7 +47,6 @@ export async function PATCH(
         }
 
         const allowed = validTransitions[order.status] || [];
-        // console.log("Allowed transitions from", order.status, "are", allowed);
 
         if (!allowed.includes(status)) {
             return NextResponse.json(
@@ -60,7 +59,6 @@ export async function PATCH(
             where: { id: params.id },
             data: { status ,estimatedDelivery},
         });
-        // console.log("Updated order status to", updated.status);
         return NextResponse.json(updated);
 
     } catch (error) {

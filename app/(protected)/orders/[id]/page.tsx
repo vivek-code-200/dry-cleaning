@@ -1,38 +1,10 @@
-// "use client";
-
-// import { useEffect, useState } from "react";
 import prisma from "@/lib/prisma";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import StatusManager from "./components/Status";
 
-// type Item = {
-//   id: string;
-//   garment: string;
-//   quantity: number;
-//   price: number;
-//   subtotal: number;
-// };
-
-// type Order = {
-//   id: string;
-//   orderNumber: string;
-//   customerName: string;
-//   phone: string;
-//   status: string;
-//   totalAmount: number;
-//   createdAt: string;
-//   items: Item[]; // ✅ THIS WAS MISSING
-// };
 
 export default async function OrderDetails(props: any) {
-    //   const [order, setOrder] = useState<Order | null>(null);
-
-    //   useEffect(() => {
-    //     fetch(`/api/orders/${params.id}`)
-    //       .then((res) => res.json())
-    //       .then((data) => setOrder(data));
-    //   }, [params.id]);
     const params = await props.params;
     const order = await prisma.order.findUnique({
         where: { id: params.id },
@@ -41,7 +13,7 @@ export default async function OrderDetails(props: any) {
     if (!order) return <p className="p-6">Loading...</p>;
 
     return (
-        <div className="p-6 bg-gray-100 flex-1">
+        <div className="p-6 bg-gray-100 flex-1 pt-24 md:pt-5">
 
             {/* HEADER */}
             <div className="flex justify-between items-center mb-6">
@@ -65,10 +37,10 @@ export default async function OrderDetails(props: any) {
                 </span>
             </div>
 
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-6">
 
                 {/* LEFT */}
-                <div className="col-span-2 space-y-6">
+                <div className="md:col-span-2 space-y-6">
 
                     {/* CUSTOMER */}
                     <div className="bg-white p-6 rounded-2xl shadow-sm">
@@ -123,35 +95,6 @@ export default async function OrderDetails(props: any) {
                     <div className="bg-white p-6 rounded-2xl shadow-sm">
                         <h2 className="font-medium mb-4">Update Status</h2>
                         <StatusManager orderId={order.id} currentStatus={order.status} />
-                        {/* <select
-                            value={order.status}
-                            onChange={async (e) => {
-                                e.target.value
-                                // const newStatus = e.target.value;
-
-                                // const res = await fetch(
-                                //     `/api/orders/${order.id}/status`,
-                                //     {
-                                //         method: "PATCH",
-                                //         headers: {
-                                //             "Content-Type": "application/json",
-                                //         },
-                                //         body: JSON.stringify({ status: newStatus }),
-                                //     }
-                                // );
-
-                                // if (res.ok) {
-                                //     setOrder({ ...order, status: newStatus });
-                                }
-                            }
-                            className="w-full border p-2 rounded-lg"
-                        >
-                            <option value="RECEIVED">RECEIVED</option>
-                            <option value="PROCESSING">PROCESSING</option>
-                            <option value="READY">READY</option>
-                            <option value="DELIVERED">DELIVERED</option>
-                        </select> */}
-
                     </div>
 
                     {/* SUMMARY */}

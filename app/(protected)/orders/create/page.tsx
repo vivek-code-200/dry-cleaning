@@ -1,6 +1,7 @@
 "use client"
 import Link from "next/link";
 import { useState } from "react";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 // 🔹 Types
 type Item = {
@@ -80,21 +81,8 @@ export default function CreateOrderPage() {
     const handleSubmit = async (
 
     ) => {
-        // e.preventDefault();
         setSaving(true)
         setErrors({})
-
-        // if (!form.customerName || !form.phone) {
-        //     alert("Customer details required");
-        //     setSaving(false)
-        //     return;
-        // }
-
-        // if (items.length === 0 || items[0].garment==="" || items[0].price===0) {
-        //     alert("Add at least one item");
-        //     setSaving(false)
-        //     return;
-        // }
 
         const payload = {
             customerName: form.customerName,
@@ -130,7 +118,17 @@ export default function CreateOrderPage() {
             // reset
             setForm({ customerName: "", phone: "", estimatedDelivery: "" });
             setItems([{ garment: "", quantity: 1, price: 0 }]);
-            alert(`${data.orderNumber} is Created.`)
+            toast.success(`${data.orderNumber} is Created.`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
 
         } catch (err) {
             console.error(err);
@@ -141,6 +139,19 @@ export default function CreateOrderPage() {
 
     return (
         <div className="flex-1  bg-gray-100 mt-24 md:mt-0">
+            <ToastContainer
+                    position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick={false}
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light"
+                    transition={Bounce}
+                />
             <header className="bg-black/10 border-b border-black/20 px-6 py-4 flex justify-between">
                 <div>
                     <p className=" text-gray-800 ">
@@ -156,6 +167,7 @@ export default function CreateOrderPage() {
 
             {/* MAIN CONTENT */}
             <div className="flex-1 p-6 grid md:grid-cols-3 gap-6">
+                
 
                 {/* LEFT: FORM */}
                 <div className="md:col-span-2 bg-white p-6 rounded-2xl shadow-sm space-y-6">

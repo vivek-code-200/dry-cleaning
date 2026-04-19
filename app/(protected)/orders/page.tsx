@@ -1,7 +1,4 @@
-// "use client";
 
-// import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
 import { auth } from "@/auth";
 import Link from "next/link";
 import Filter from "./components/filter";
@@ -27,60 +24,16 @@ export default async function OrdersPage({ searchParams,
 
     const search = params.search || "all";
     const status = params.status || "all";
-    //   const [orders, setOrders] = useState<Order[]>([]);
-    //   const [search, setSearch] = useState("");
-    //   const [status, setStatus] = useState("");
     const session = await auth()
-    // const orders = await prisma.order.findMany({
-    //     where: { userId: session?.user.id }
-    // })
     const orders = await getOrders({
         search: params.search,
         status: params.status,
-        userId: session?.user.id, // replace with auth later
+        userId: session?.user.id, 
     });
 
 
-    //   const router = useRouter();
-
-    //   const fetchOrders = async () => {
-    //     const query = new URLSearchParams();
-
-    //     if (search) query.append("search", search);
-    //     if (status) query.append("status", status);
-
-    //     const res = await fetch(`/api/orders?${query.toString()}`);
-    //     const data = await res.json();
-
-    //     setOrders(data);
-    //   };
-
-    //   useEffect(() => {
-    //     fetchOrders();
-    //   }, [search, status]);
-
     return (
         <div className=" bg-gray-100 flex-1 mt-24 md:mt-0">
-
-            {/* HEADER */}
-            {/* <div className="flex justify-between items-center mb-6">
-                <div className="flex items-center gap-2">
-                    <Link href="/dashboard">
-                        <div className="p-1 bg-gray-300 hover:bg-gray-400 transition duration-300 cursor-pointer rounded-lg">
-                            <ArrowLeft />
-                        </div>
-                    </Link>
-                    <h1 className="text-2xl font-semibold">Orders</h1>
-                </div>
-
-                <Link href="/orders/create">
-                    <button
-                        className="bg-black text-white px-4 py-2 rounded-lg cursor-pointer hover:bg-black/80 hover:text-white transition duration-300"
-                    >
-                        + Create Order
-                    </button>
-                </Link>
-            </div> */}
 
             <header className="bg-black/10 border-b border-black/20 px-3 py-4 flex justify-between">
                 <div className="flex items-center gap-2">
@@ -130,11 +83,8 @@ export default async function OrdersPage({ searchParams,
                         )}
 
                         {orders.map((order) => (
-                            // <Link href={order.id} key={order.id} className="border-t cursor-pointer hover:bg-gray-50">
                             <tr
                                 key={order.id} className="border-t cursor-pointer hover:bg-gray-50"
-                            // onClick={() => router.push(`/orders/${order.id}`)}
-                            // className="border-t cursor-pointer hover:bg-gray-50"
                             >
                                 <td className="p-4 font-medium">
                                     {order.orderNumber}
@@ -161,7 +111,6 @@ export default async function OrdersPage({ searchParams,
                                 </td>
 
                             </tr>
-                            // </Link>
                         ))}
                     </tbody>
 

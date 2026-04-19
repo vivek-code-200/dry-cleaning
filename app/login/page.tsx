@@ -4,7 +4,6 @@ import { loginWithGoogle } from "@/lib/auth";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-// import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
     const { data: session } = useSession();

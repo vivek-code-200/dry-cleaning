@@ -90,7 +90,7 @@ export default async function ProductPreview() {
                             </div>
                         </Link>
 
-                        <Link href="/orders?status=RECEIVED">
+                        <Link href="/orders?status=PENDING">
                             <div className="bg-whit bg-gray-200 text-gray-700 p-4 rounded-xl shadow-sm border border-black/10 hover:border-gray-700 transition cursor-pointer">
                                 <p className="text-sm text-gray-500">Pending Orders</p>
                                 <p className="text-xl font-semibold">{pendingOrders.length}</p>

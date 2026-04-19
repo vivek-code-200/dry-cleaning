@@ -1,27 +1,3 @@
-// import React from 'react'
-
-// const Sidebar = () => {
-//   return (
-//     <div>
-//       <aside className="w-64 h-screen bg-white border-r p-6 hidden md:block">
-//         <h2 className="text-xl font-semibold mb-8">LaundryOS</h2>
-
-//         <nav className="space-y-4 text-sm">
-//           <p className="text-gray-500">Dashboard</p>
-//           <p className="text-gray-500">Orders</p>
-//           <p className="text-gray-500">Customers</p>
-//         </nav>
-
-//         <button className="mt-10 w-full bg-black text-white py-2 rounded-lg">
-//           + Create Order
-//         </button>
-//       </aside>
-//     </div>
-//   )
-// }
-
-// export default Sidebar
-
 "use client";
 
 import Link from "next/link";

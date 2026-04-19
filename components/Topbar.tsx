@@ -1,12 +1,9 @@
 "use client"
-import React from 'react'
 import UserDropdown from './userDropdown'
 import { usePathname } from "next/navigation";
 import MobileSidebar from './MobileSidebar';
-// import { auth } from '@/auth'
 
 export default function Topbar({ name = "User" }: { name?: string }) {
-    // const session = await auth();
 
     const today = new Date().toLocaleDateString("en-IN", {
         weekday: "short",

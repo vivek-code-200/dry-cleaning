@@ -12,17 +12,7 @@ export async function middleware(req: NextRequest) {
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url))
   }
-  // if (req.nextUrl.pathname.startsWith("/set-password")) {
-  //   return NextResponse.next()
-  // }
-  // if (
-  //   token.isOAuth &&
-  //   !token.hasPassword &&
-  //   req.nextUrl.pathname !== "/set-password"
-  // ) {
-  //   return NextResponse.redirect(new URL("/set-password", req.url))
-  // }
-  // Logged in → continue
+
   return NextResponse.next()
 }
 

@@ -1,93 +1,3 @@
-// import { NextResponse } from "next/server";
-// import prisma from "@/lib/prisma";
-// import { auth } from "@/auth";
-
-// export async function POST(req: Request) {
-//     try {
-//         const body = await req.json();
-//         const session = await auth()
-
-//         const { customerName, phone, items } = body;
-
-//         // 🔴 Basic validation
-//         if (!customerName || !phone) {
-//             return NextResponse.json(
-//                 { error: "Customer details required" },
-//                 { status: 400 }
-//             );
-//         }
-
-//         if (!items || items.length === 0) {
-//             return NextResponse.json(
-//                 { error: "At least one item required" },
-//                 { status: 400 }
-//             );
-//         }
-
-//         // 🔥 Calculate totals safely
-//         const processedItems = items.map((item: any) => {
-//             const quantity = Number(item.quantity);
-//             const price = Number(item.price);
-
-//             return {
-//                 garment: item.garment,
-//                 quantity,
-//                 price,
-//                 subtotal: quantity * price,
-//             };
-//         });
-
-//         const totalAmount = processedItems.reduce(
-//             (sum: number, item: any) => sum + item.subtotal,
-//             0
-//         );
-
-//         // 🔥 Generate Order Number (simple version)
-//         const userId=session?.user.id
-//         const user = await prisma.user.findUnique({
-//             where: { id: userId },
-//             select: {
-//                 OrderPrefix: true,
-//                 OrderSequence: true,
-//                 OrderSequenceYear: true,
-//             },
-//         });
-//         const year = new Date().getFullYear();
-//         const prefix = user?.OrderPrefix?.trim().toUpperCase() || "INV";
-//         const isNewYear = !user || user.OrderSequenceYear < year;
-//         const next = isNewYear ? 1 : (user.OrderSequence ?? 0) + 1;
-//         const padded = String(next).padStart(4, "0");
-
-//         const orderNumber = `${prefix}-${year}-${padded}`;
-//         // ✅ Create Order + Items (transaction)
-//         const order = await prisma.order.create({
-//             data: {
-//                 userId,
-//                 orderNumber,
-//                 customerName,
-//                 phone,
-//                 totalAmount,
-//                 items: {
-//                     create: processedItems,
-//                 },
-//             },
-//             include: {
-//                 items: true,
-//             },
-//         });
-
-//         return NextResponse.json(order);
-
-//     } catch (error) {
-//         console.error("Create Order Error:", error);
-
-//         return NextResponse.json(
-//             { error: "Internal Server Error" },
-//             { status: 500 }
-//         );
-//     }
-// }
-
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
@@ -170,11 +80,8 @@ export async function POST(req: Request) {
 
         const errors = validateOrderInput(customerName, phone, estimatedDelivery, items);
 
-        // const now = new Date();
         const parsedDate = estimatedDelivery ? new Date(estimatedDelivery + "T00:00:00") : null;
 
-        // const autoestimatedDelivery = new Date(now);
-        // autoestimatedDelivery.setDate(now.getDate() + 2);
 
         if (Object.keys(errors).length > 0) {
             return NextResponse.json(
@@ -197,12 +104,7 @@ export async function POST(req: Request) {
                 { status: 400 }
             );
         }
-        // if(!estimatedDelivery){
-        //     return NextResponse.json(
-        //         { error: "Estimated delivery date is required" },
-        //         { status: 400 }
-        //     );
-        // }
+
 
         // 🔥 Process items safely
         const processedItems = items.map((item) => {
@@ -253,14 +155,9 @@ export async function POST(req: Request) {
                 },
             });
             const prefix = updated.OrderPrefix?.trim().toUpperCase() || "ORD";
-
-            // const next = isNewYear ? 1 : (user.OrderSequence ?? 0) + 1;
             const padded = String(updated.OrderSequence).padStart(4, "0");
 
             const orderNumber = `${prefix}-${year}-${padded}`;
-            console.log("Generated Order Number:", orderNumber);
-
-            //   const orderNumber = `ORD-${String(count + 1).padStart(3, "0")}`;
 
             return tx.order.create({
                 data: {
