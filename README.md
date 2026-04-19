@@ -145,8 +145,8 @@ Provides a **quick operational snapshot** of the system:
 ### 1. Clone Repository
 
 ```bash id="s1"
-git clone <your-repo-link>
-cd <project-folder>
+git clone https://github.com/vivek-code-200/dry-cleaning.git
+cd dry-cleaning
 ```
 
 ---
