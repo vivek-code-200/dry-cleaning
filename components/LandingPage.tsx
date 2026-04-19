@@ -2,8 +2,6 @@ import Link from "next/link";
 export default function LandingPage() {
     return (
         <div className="bg-linear-to-bl from-slate-200 to-slate-900 text-gray-900 pt-20">
-
-
             {/* HERO */}
             <section className="min-h-[85vh] flex items-center justify-center px-6 text-center relative overflow-hidden">
 

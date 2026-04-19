@@ -6,11 +6,11 @@ A fast, production-minded system for managing dry cleaning orders — built with
 
 ## 🚀 Live Demo
 
-👉 <your-deployed-link>
+👉 Coming soon (deployment in progress)
 
 ## 📂 GitHub Repository
 
-👉 <your-repo-link>
+👉 https://github.com/vivek-code-200/dry-cleaning
 
 ---
 

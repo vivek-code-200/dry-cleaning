@@ -1,5 +1,5 @@
 "use client"
-import Hero from "@/components/Hero";
+import LandingPage from "@/components/LandingPage";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -15,8 +15,8 @@ export default function Home() {
   }, [session]);
 
   return (
-    <div className="">
-      <Hero/>
+    <div>
+      <LandingPage/>
     </div>
   );
 }
