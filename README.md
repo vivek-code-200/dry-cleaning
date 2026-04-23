@@ -6,7 +6,7 @@ A fast, production-minded system for managing dry cleaning orders — built with
 
 ## 🚀 Live Demo
 
-👉 Coming soon (deployment in progress)
+👉 https://getlaundered.vercel.app/
 
 ## 📂 GitHub Repository
 
