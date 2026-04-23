@@ -5,7 +5,7 @@ export function Navbar() {
     return (<header className="flex justify-between items-center md:px-24 px-5 py-4 border-b border-black/30 backdrop-blur-md fixed w-full top-0 z-50 ">
         <Link href="/">
             <div className=" font-black text-xl ">
-                Laundry<span className="text-indigo-500">OS</span>
+                Laundry<span className="text-indigo-700">OS</span>
             </div>
         </Link>
         <div className="flex gap-4">
