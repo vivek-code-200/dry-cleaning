@@ -119,10 +119,10 @@ export default async function OrdersPage({ searchParams,
                 <div className="space-y-4 md:hidden">
 
                     {orders.map((order) => (
-                        <div
-                            key={order.id}
-                            className="bg-white p-4 rounded-2xl shadow-sm border flex flex-col gap-2"
-                        >
+                        <Link href={`orders/${order.id}`} key={order.id}>
+                            <div
+                                className="bg-white p-4 rounded-2xl shadow-sm border flex flex-col gap-2"
+                            >
 
                             {/* TOP ROW */}
                             <div className="flex justify-between items-center">
@@ -174,8 +174,8 @@ export default async function OrdersPage({ searchParams,
                             </div>
 
                         </div>
-                    ))}
-
+                    </Link>
+                ))}
                 </div>
             </div>
 
