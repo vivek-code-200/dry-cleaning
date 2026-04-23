@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import Link from "next/link";
 import prisma from "@/lib/prisma";
+import { Order } from "@prisma/client";
 
 export default async function ProductPreview() {
 
@@ -36,7 +37,7 @@ export default async function ProductPreview() {
         }
     }
 
-    const pendingOrders = orders.filter(order =>
+    const pendingOrders = orders.filter((order: Order) =>
         PENDING_STATUSES.includes(order.status as typeof PENDING_STATUSES[number])
     );
 
