@@ -9,8 +9,6 @@ export async function middleware(req: NextRequest) {
     secureCookie: process.env.NODE_ENV === "production",
   })
 
-  console.log("TOKEN:", token);
-  
   // Not logged in → redirect
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url))
